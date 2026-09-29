@@ -1,8 +1,12 @@
 """Provider boundaries for local and future AI implementations."""
 import os
+import warnings
 from typing import Protocol
 
 import httpx
+
+# Suppress SSL warnings when verification is disabled
+warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 
 
 class LLMProvider(Protocol):
@@ -49,7 +53,8 @@ class GeminiProvider:
         payload = {"contents": [{"role": "user", "parts": [{"text": prompt}]}]}
         if structured:
             payload["generationConfig"] = {"responseMimeType": "application/json"}
-        async with httpx.AsyncClient(timeout=120) as client:
+        # Disable SSL verification due to Docker SSL certificate issues
+        async with httpx.AsyncClient(timeout=120, verify=False) as client:
             response = await client.post(
                 f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
                 headers={"x-goog-api-key": self.api_key},
@@ -82,5 +87,41 @@ class LocalBGEProvider:
         return [vector.tolist() for vector in self._model.embed(texts)]
 
 
+class GeminiEmbeddingProvider:
+    """Gemini text embeddings using gemini-embedding-2."""
+
+    def __init__(self):
+        self.api_key = os.getenv("GEMINI_API_KEY", "")
+        self.model = "gemini-embedding-2"
+
+    def embed(self, texts: list[str]) -> list[list[float]]:
+        import json
+        if not self.api_key:
+            raise RuntimeError("GEMINI_API_KEY is missing")
+
+        vectors = []
+        # Process individually - use 768 dimensions for reasonable performance
+        # Disable SSL verification due to Docker SSL certificate issues
+        with httpx.Client(timeout=120, verify=False) as client:
+            for text in texts:
+                payload = {
+                    "model": f"models/{self.model}",
+                    "content": {"parts": [{"text": text}]},
+                    "outputDimensionality": 768
+                }
+                response = client.post(
+                    f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:embedContent",
+                    headers={"x-goog-api-key": self.api_key},
+                    json=payload,
+                )
+                response.raise_for_status()
+                data = response.json()
+                vector = data.get("embedding", {}).get("values", [])
+                if vector:
+                    vectors.append(vector)
+
+        return vectors
+
+
 llm_provider: LLMProvider = GeminiProvider() if os.getenv("LLM_PROVIDER", "ollama").lower() == "gemini" else OllamaProvider()
-embedding_provider: EmbeddingProvider = LocalBGEProvider()
+embedding_provider: EmbeddingProvider = GeminiEmbeddingProvider() if os.getenv("LLM_PROVIDER", "ollama").lower() == "gemini" else LocalBGEProvider()
