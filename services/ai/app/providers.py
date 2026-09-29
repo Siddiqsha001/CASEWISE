@@ -48,24 +48,43 @@ class GeminiProvider:
         self.model = self.analysis_model
 
     async def _generate(self, prompt: str, model: str, structured: bool = False) -> str:
+        import asyncio
         if not self.api_key:
             raise RuntimeError("GEMINI_API_KEY is missing. Add it to the ignored .env file.")
         payload = {"contents": [{"role": "user", "parts": [{"text": prompt}]}]}
         if structured:
             payload["generationConfig"] = {"responseMimeType": "application/json"}
-        # Disable SSL verification due to Docker SSL certificate issues
-        async with httpx.AsyncClient(timeout=120, verify=False) as client:
-            response = await client.post(
-                f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                headers={"x-goog-api-key": self.api_key},
-                json=payload,
-            )
-            response.raise_for_status()
-            parts = response.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
-        answer = "".join(part.get("text", "") for part in parts).strip()
-        if not answer:
-            raise RuntimeError("Gemini returned no answer")
-        return answer
+
+        # Retry with exponential backoff for 503 errors
+        max_retries = 3
+
+        for attempt in range(max_retries):
+            try:
+                # Disable SSL verification due to Docker SSL certificate issues
+                async with httpx.AsyncClient(timeout=120, verify=False) as client:
+                    response = await client.post(
+                        f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                        headers={"x-goog-api-key": self.api_key},
+                        json=payload,
+                    )
+                    response.raise_for_status()
+                    parts = response.json().get("candidates", [{}])[0].get("content", {}).get("parts", [])
+                answer = "".join(part.get("text", "") for part in parts).strip()
+                if not answer:
+                    raise RuntimeError("Gemini returned no answer")
+                return answer
+            except httpx.HTTPStatusError as e:
+                if e.response.status_code == 503 and attempt < max_retries - 1:
+                    # Retry after delay (exponential backoff)
+                    wait_time = (2 ** attempt) * 1  # 1s, 2s, 4s
+                    await asyncio.sleep(wait_time)
+                    continue
+                elif e.response.status_code == 503:
+                    raise RuntimeError("Gemini API is temporarily unavailable (high demand). Please try again in a few moments.")
+                else:
+                    raise
+
+        raise RuntimeError("Gemini API unavailable after retries")
 
     async def generate_answer(self, prompt: str) -> str:
         return await self._generate(prompt, self.answer_model)

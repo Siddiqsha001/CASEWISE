@@ -300,7 +300,7 @@ def index_document(document_id: str, case_id: str, user_id: uuid.UUID):
         if not source:
             raise ValueError("No extractable text found. Scanned PDFs need OCR, which is not available yet.")
         vectors = embedding_provider.embed([part for _, part in source])
-        qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY or None)
+        qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY or None, https=None, verify=False)
         if not qdrant.collection_exists(COLLECTION):
             qdrant.create_collection(COLLECTION, vectors_config=models.VectorParams(size=len(vectors[0]), distance=models.Distance.COSINE))
             qdrant.create_payload_index(COLLECTION, "caseId", models.PayloadSchemaType.KEYWORD)
@@ -368,7 +368,7 @@ def get_document_file(case_id: str, document_id: str, user=Depends(principal)):
 
 def retrieve_chunks(case_id: uuid.UUID, question: str, user_id: uuid.UUID):
     vector = embedding_provider.embed([question])[0]
-    qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY or None)
+    qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY or None, https=None, verify=False)
     if not qdrant.collection_exists(COLLECTION):
         return []
     hits = qdrant.query_points(COLLECTION, query=vector, query_filter=models.Filter(must=[models.FieldCondition(key="caseId", match=models.MatchValue(value=str(case_id)))]), limit=6, score_threshold=0.3).points
