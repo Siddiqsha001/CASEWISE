@@ -1,0 +1,11 @@
+fastapi==0.115.6
+uvicorn==0.34.0
+python-multipart==0.0.20
+psycopg[binary]==3.2.3
+httpx==0.28.1
+certifi==2024.8.30
+PyMuPDF==1.25.1
+python-docx==1.1.2
+qdrant-client==1.12.1
+fastembed==0.4.2
+PyJWT[crypto]==2.10.1

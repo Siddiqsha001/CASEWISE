@@ -1,0 +1,6 @@
+.analysis-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0 24px}
+.analysis-grid h3{text-transform:capitalize;font-size:15px}
+.analysis-item{border-top:1px solid #e2e9e8;padding:12px 0}
+.analysis-item p{color:#172d39;font-size:13px;line-height:1.5}
+.analysis-item blockquote{margin:10px 0;padding-left:12px;border-left:2px solid #9bcac3;color:#6f7d84;font-size:12px}
+@media(max-width:650px){.analysis-grid{grid-template-columns:1fr}}
