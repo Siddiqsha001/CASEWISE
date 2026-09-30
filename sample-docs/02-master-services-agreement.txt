@@ -1,0 +1,203 @@
+MASTER SERVICES AGREEMENT
+
+This Master Services Agreement ("Agreement") is entered into as of March 15, 2024 ("Effective Date"), by and between:
+
+TechVision Solutions Inc., a California corporation with its principal place of business at 1250 Market Street, San Francisco, CA 94102 ("Client"), and
+
+Quantum Digital Services LLC, a Delaware limited liability company with its principal place of business at 500 Silicon Valley Drive, Palo Alto, CA 94301 ("Contractor").
+
+RECITALS
+
+WHEREAS, Client is engaged in the business of developing enterprise software solutions and requires professional software development services for its VisionCRM platform;
+
+WHEREAS, Contractor represents that it possesses the necessary expertise, personnel, and resources to provide such services;
+
+WHEREAS, the parties desire to establish the terms and conditions under which Contractor will provide services to Client.
+
+NOW, THEREFORE, in consideration of the mutual covenants and agreements contained herein, and for other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, the parties agree as follows:
+
+ARTICLE 1: SCOPE OF SERVICES
+
+1.1 Services. Contractor shall provide software development services for Client's VisionCRM platform (the "Project") in accordance with the Statement of Work attached hereto as Exhibit A and incorporated herein by reference.
+
+1.2 Project Phases. The Project shall be completed in four phases:
+
+Phase 1 (April 1 - June 30, 2024): Core architecture development, database schema design, and API framework implementation. Deliverables include system architecture documentation, entity-relationship diagrams, API specifications, and functional core modules.
+
+Phase 2 (July 1 - September 30, 2024): Development of AI-powered analytics engine, including machine learning models for customer behavior prediction, natural language processing for automated ticket classification, and real-time reporting dashboards.
+
+Phase 3 (October 1 - December 31, 2024): Integration with third-party enterprise systems including Salesforce, SAP ERP, Oracle Database, Microsoft Dynamics 365, and implementation of single sign-on (SSO) authentication and data synchronization services.
+
+Phase 4 (January 1 - March 31, 2025): Advanced features development including mobile applications for iOS and Android, offline synchronization capabilities, advanced security features, and customizable workflow automation tools.
+
+Final Phase (April 1 - September 30, 2025): System testing, quality assurance, performance optimization, security audits, user acceptance testing, documentation, training materials, and production deployment.
+
+1.3 Performance Standards. All services shall be performed in a professional and workmanlike manner consistent with industry best practices and shall meet or exceed the specifications and acceptance criteria set forth in the Statement of Work.
+
+ARTICLE 2: COMPENSATION AND PAYMENT TERMS
+
+2.1 Total Contract Value. The total compensation for all services under this Agreement shall be Two Million Eight Hundred Fifty Thousand Dollars ($2,850,000).
+
+2.2 Payment Schedule. Client shall pay Contractor according to the following milestone-based schedule:
+
+- Phase 1 Completion: $475,000 (upon acceptance of Phase 1 deliverables)
+- Phase 2 Completion: $570,000 (upon acceptance of Phase 2 deliverables)
+- Phase 3 Completion: $665,000 (upon acceptance of Phase 3 deliverables)
+- Phase 4 Completion: $570,000 (upon acceptance of Phase 4 deliverables)
+- Final Deployment: $570,000 (upon successful production deployment and final acceptance)
+
+2.3 Invoicing. Contractor shall submit invoices for each milestone payment within five (5) business days following Client's written acceptance of the corresponding deliverables. Client shall pay all undisputed invoices within thirty (30) days of receipt.
+
+2.4 Disputed Amounts. If Client disputes any invoice amount, Client shall notify Contractor in writing within ten (10) days of receipt, specifying the disputed amount and reasons for the dispute. The parties shall work in good faith to resolve any such disputes within fifteen (15) days.
+
+ARTICLE 3: TERM AND TERMINATION
+
+3.1 Term. This Agreement shall commence on the Effective Date and continue until September 30, 2025, unless earlier terminated in accordance with this Article.
+
+3.2 Termination for Cause. Either party may terminate this Agreement for cause upon thirty (30) days' written notice if the other party: (a) materially breaches any provision of this Agreement and fails to cure such breach within the notice period; (b) becomes insolvent or makes an assignment for the benefit of creditors; or (c) becomes subject to bankruptcy proceedings.
+
+3.3 Termination for Convenience. Client may terminate this Agreement for convenience upon sixty (60) days' written notice. In such event, Client shall pay Contractor for all services performed and expenses incurred through the effective date of termination, plus a termination fee equal to fifteen percent (15%) of the remaining unpaid contract value.
+
+3.4 Effects of Termination. Upon termination: (a) Contractor shall immediately cease all work; (b) Contractor shall deliver all completed and in-progress work product to Client; (c) Client shall pay for all services performed and accepted through the termination date; and (d) Contractor shall return or destroy all Confidential Information as specified in Article 5.
+
+ARTICLE 4: PERSONNEL AND STAFFING
+
+4.1 Key Personnel. Contractor shall assign the following key personnel to the Project:
+
+- Project Manager: Senior-level with PMP certification and minimum 10 years' experience
+- Lead Architect: Senior-level with minimum 12 years' experience in enterprise software architecture
+- Development Team: Minimum six (6) senior developers, each with minimum 8 years' experience and expertise in Java, Python, React, Node.js, and cloud platforms (AWS or Azure)
+- QA Lead: Senior-level with minimum 8 years' experience in automated testing and quality assurance
+
+4.2 Approval of Personnel. Client shall have the right to approve all key personnel assigned to the Project. Contractor shall not remove or replace any approved key personnel without Client's prior written consent, which shall not be unreasonably withheld.
+
+4.3 Qualifications. All personnel assigned to the Project must possess the qualifications, certifications, and experience levels specified in Exhibit B. Contractor represents and warrants that all assigned personnel meet these requirements.
+
+4.4 Dedicated Resources. Contractor shall ensure that assigned personnel dedicate sufficient time to the Project to meet all deadlines and deliverables. Key personnel shall dedicate at least 80% of their working time to the Project during their assigned phases.
+
+ARTICLE 5: CONFIDENTIALITY
+
+5.1 Definition. "Confidential Information" means all non-public information disclosed by either party to the other, including but not limited to technical specifications, source code, business plans, customer lists, financial information, trade secrets, and proprietary methodologies.
+
+5.2 Obligations. Each party shall: (a) maintain the confidentiality of all Confidential Information; (b) use Confidential Information only for purposes of performing under this Agreement; (c) disclose Confidential Information only to employees and contractors with a legitimate need to know; and (d) protect Confidential Information using at least the same degree of care used to protect its own confidential information, but in no event less than reasonable care.
+
+5.3 Exceptions. Confidential Information does not include information that: (a) was publicly known prior to disclosure; (b) becomes publicly known through no breach of this Agreement; (c) was rightfully received from a third party without confidentiality obligations; or (d) was independently developed without reference to Confidential Information.
+
+5.4 Return of Materials. Upon termination or at Client's request, Contractor shall promptly return or destroy (at Client's election) all Confidential Information and all copies thereof, and provide written certification of such return or destruction.
+
+5.5 Duration. The confidentiality obligations under this Article shall survive for five (5) years following the termination or expiration of this Agreement.
+
+ARTICLE 6: INTELLECTUAL PROPERTY
+
+6.1 Work Product Ownership. All work product, deliverables, inventions, discoveries, improvements, and intellectual property created, developed, or conceived by Contractor in the course of performing services under this Agreement (collectively, "Work Product") shall be the sole and exclusive property of Client. Contractor hereby assigns to Client all right, title, and interest in and to the Work Product, including all copyrights, patents, trade secrets, and other intellectual property rights.
+
+6.2 Work Made for Hire. To the extent permitted by law, all Work Product shall be deemed a "work made for hire" under the United States Copyright Act. If any Work Product is determined not to be a work made for hire, Contractor hereby irrevocably assigns to Client all worldwide right, title, and interest in such Work Product.
+
+6.3 Pre-Existing Materials. Contractor retains ownership of any pre-existing intellectual property, tools, utilities, or methodologies that Contractor brings to the Project ("Background IP"). Contractor hereby grants Client a perpetual, irrevocable, worldwide, royalty-free license to use any Background IP incorporated into the Work Product.
+
+6.4 Moral Rights. Contractor irrevocably waives any moral rights, rights of attribution, or similar rights in the Work Product to the extent permitted by law.
+
+6.5 Further Assurances. Contractor shall execute any documents and take any actions reasonably necessary to perfect Client's ownership rights in the Work Product, including executing patent applications, copyright registrations, and assignments.
+
+ARTICLE 7: REPRESENTATIONS AND WARRANTIES
+
+7.1 Authority. Each party represents and warrants that it has full authority to enter into this Agreement and to perform its obligations hereunder.
+
+7.2 Contractor Warranties. Contractor represents and warrants that:
+
+(a) Quality of Work: All services shall be performed in a professional and workmanlike manner in accordance with industry best practices and standards.
+
+(b) No Infringement: The Work Product shall not infringe any intellectual property rights, proprietary rights, or other rights of any third party.
+
+(c) Capacity and Resources: Contractor has and will maintain sufficient personnel, expertise, equipment, and resources to perform all services under this Agreement in accordance with the specified timelines and quality standards.
+
+(d) Compliance with Laws: All services shall be performed in compliance with all applicable federal, state, and local laws and regulations.
+
+(e) No Conflicts: Contractor's performance under this Agreement does not and will not conflict with any other agreement or obligation of Contractor.
+
+7.3 Warranty Period. Contractor warrants that all Work Product shall be free from defects in workmanship and shall conform to the specifications for a period of twelve (12) months following final acceptance ("Warranty Period"). During the Warranty Period, Contractor shall, at no additional cost to Client, correct any defects or non-conformities reported by Client.
+
+7.4 Disclaimer. EXCEPT AS EXPRESSLY SET FORTH IN THIS AGREEMENT, CONTRACTOR MAKES NO OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+ARTICLE 8: INDEMNIFICATION
+
+8.1 Contractor Indemnification. Contractor shall indemnify, defend, and hold harmless Client, its officers, directors, employees, and agents from and against all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising out of or resulting from:
+
+(a) Any breach of Contractor's representations, warranties, or obligations under this Agreement;
+
+(b) Any infringement or alleged infringement of intellectual property rights arising from the Work Product;
+
+(c) Any personal injury, death, or property damage caused by Contractor's negligence or willful misconduct;
+
+(d) Any violation of applicable laws or regulations by Contractor or its personnel.
+
+8.2 Indemnification Procedures. The indemnified party shall promptly notify the indemnifying party of any claim and shall cooperate in the defense thereof. The indemnifying party shall have sole control over the defense and settlement of any claim, provided that no settlement shall be made without the indemnified party's consent if it requires the indemnified party to admit liability or pay any amounts.
+
+ARTICLE 9: LIMITATION OF LIABILITY
+
+9.1 Consequential Damages. Notwithstanding any other provision of this Agreement, NEITHER PARTY SHALL BE LIABLE TO THE OTHER FOR ANY INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, OR PUNITIVE DAMAGES, INCLUDING LOST PROFITS, LOST REVENUE, OR LOST DATA, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+9.2 Cap on Liability. Except for breaches of confidentiality obligations, intellectual property indemnification obligations, or either party's gross negligence or willful misconduct, each party's total cumulative liability under this Agreement shall not exceed the total amount paid or payable to Contractor under this Agreement.
+
+9.3 Exceptions. The limitations in this Article shall not apply to: (a) breaches of confidentiality; (b) indemnification obligations under Article 8; (c) infringement of intellectual property rights; or (d) gross negligence or willful misconduct.
+
+ARTICLE 10: NON-SOLICITATION
+
+10.1 Prohibition. During the term of this Agreement and for a period of two (2) years following its termination, neither party shall, directly or indirectly, solicit, recruit, or hire any employee or contractor of the other party who was involved in the performance of services under this Agreement, without the other party's prior written consent.
+
+10.2 Remedy. In the event of a breach of this non-solicitation provision, the breaching party shall pay to the non-breaching party liquidated damages in an amount equal to one hundred fifty percent (150%) of the annual compensation of the solicited individual.
+
+ARTICLE 11: DISPUTE RESOLUTION
+
+11.1 Negotiation. In the event of any dispute arising out of or relating to this Agreement, the parties shall first attempt to resolve the dispute through good faith negotiations between senior executives of each party.
+
+11.2 Mediation. If the dispute is not resolved through negotiation within thirty (30) days, the parties shall submit the dispute to non-binding mediation administered by JAMS in accordance with its Commercial Mediation Rules. The mediation shall take place in San Francisco, California.
+
+11.3 Litigation. If the dispute is not resolved through mediation within sixty (60) days of the mediation demand, either party may initiate litigation. The parties consent to the exclusive jurisdiction of the state and federal courts located in San Francisco County, California.
+
+11.4 Attorneys' Fees. The prevailing party in any litigation or arbitration shall be entitled to recover its reasonable attorneys' fees and costs.
+
+ARTICLE 12: GENERAL PROVISIONS
+
+12.1 Governing Law. This Agreement shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflicts of law principles.
+
+12.2 Entire Agreement. This Agreement, together with all exhibits and attachments, constitutes the entire agreement between the parties and supersedes all prior agreements, understandings, and communications, whether oral or written, relating to the subject matter hereof.
+
+12.3 Amendments. No amendment or modification of this Agreement shall be valid unless in writing and signed by authorized representatives of both parties.
+
+12.4 Assignment. Neither party may assign this Agreement without the other party's prior written consent, except that Client may assign this Agreement to any successor or affiliate without consent.
+
+12.5 Notices. All notices required or permitted under this Agreement shall be in writing and delivered by personal delivery, overnight courier, or certified mail to the addresses set forth above, or such other addresses as either party may designate in writing.
+
+12.6 Severability. If any provision of this Agreement is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect, and the invalid provision shall be modified to the minimum extent necessary to make it valid and enforceable.
+
+12.7 Waiver. No waiver of any provision of this Agreement shall be effective unless in writing and signed by the waiving party. No waiver shall constitute a continuing waiver or a waiver of any other provision.
+
+12.8 Independent Contractor. Contractor is an independent contractor and not an employee or agent of Client. Nothing in this Agreement creates a partnership, joint venture, or agency relationship between the parties.
+
+12.9 Force Majeure. Neither party shall be liable for any failure or delay in performance due to causes beyond its reasonable control, including acts of God, war, terrorism, strikes, natural disasters, or government actions, provided that the affected party promptly notifies the other party and uses reasonable efforts to mitigate the effects.
+
+12.10 Counterparts. This Agreement may be executed in counterparts, each of which shall be deemed an original and all of which together shall constitute one instrument.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the Effective Date.
+
+TECHVISION SOLUTIONS INC.
+
+By: _________________________________
+Name: Sarah Martinez
+Title: Chief Executive Officer
+Date: March 15, 2024
+
+
+QUANTUM DIGITAL SERVICES LLC
+
+By: _________________________________
+Name: Robert Thompson
+Title: Managing Partner
+Date: March 15, 2024
+
+EXHIBIT A: STATEMENT OF WORK
+[Technical specifications and detailed requirements - 25 pages]
+
+EXHIBIT B: PERSONNEL QUALIFICATIONS
+[Detailed qualifications and certifications required - 8 pages]

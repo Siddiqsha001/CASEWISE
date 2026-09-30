@@ -1,0 +1,166 @@
+IN THE SUPERIOR COURT OF THE STATE OF CALIFORNIA
+COUNTY OF SAN FRANCISCO
+
+TECHVISION SOLUTIONS INC.,
+    Plaintiff,
+
+v.
+
+QUANTUM DIGITAL SERVICES LLC,
+    Defendant.
+
+Case No. CV-2025-004892
+COMPLAINT FOR BREACH OF CONTRACT, BREACH OF FIDUCIARY DUTY, AND FRAUD
+
+COMES NOW Plaintiff TechVision Solutions Inc., by and through its undersigned counsel, and for its Complaint against Defendant Quantum Digital Services LLC, alleges as follows:
+
+PARTIES
+
+1. Plaintiff TechVision Solutions Inc. ("TechVision") is a California corporation with its principal place of business located at 1250 Market Street, San Francisco, California 94102. TechVision specializes in enterprise software development, cloud infrastructure solutions, and digital transformation consulting services for Fortune 500 companies.
+
+2. Defendant Quantum Digital Services LLC ("Quantum") is a Delaware limited liability company registered to do business in California, with its principal place of business located at 500 Silicon Valley Drive, Palo Alto, California 94301. Quantum operates as a software development and IT consulting firm providing services to mid-market and enterprise clients.
+
+JURISDICTION AND VENUE
+
+3. This Court has jurisdiction over this matter pursuant to California Code of Civil Procedure Section 410.10, as Defendant conducts substantial business activities within the State of California and the causes of action arose in California.
+
+4. Venue is proper in the Superior Court of California, County of San Francisco, pursuant to California Code of Civil Procedure Sections 395 and 395.5, as the contract at issue was negotiated, executed, and substantially performed in San Francisco County, and Defendant regularly conducts business in this County.
+
+FACTUAL BACKGROUND
+
+5. On March 15, 2024, TechVision and Quantum entered into a Master Services Agreement ("MSA") whereby Quantum agreed to provide software development services for TechVision's proprietary customer relationship management platform, known as "VisionCRM" (the "Project").
+
+6. The MSA, attached hereto as Exhibit A, contained detailed specifications for the development work, including the creation of advanced AI-powered analytics features, real-time data synchronization capabilities, and integration with third-party enterprise systems including Salesforce, SAP, and Oracle databases.
+
+7. The total contract value was $2,850,000, payable in milestone-based installments over an eighteen-month development period from April 1, 2024, through September 30, 2025.
+
+8. The MSA contained specific performance benchmarks, quality assurance protocols, and delivery timelines for each development phase. Phase 1 was to be completed by June 30, 2024; Phase 2 by September 30, 2024; Phase 3 by December 31, 2024; and Phase 4 by March 31, 2025, with final testing and deployment by September 30, 2025.
+
+9. The agreement included confidentiality provisions, intellectual property assignment clauses stating that all work product would become the exclusive property of TechVision, and non-solicitation covenants preventing Quantum from hiring TechVision employees or soliciting TechVision clients for a period of two years following the agreement's termination.
+
+PERFORMANCE AND BREACH
+
+10. TechVision performed all of its obligations under the MSA, including making timely payments for completed milestones totaling $1,425,000 through December 31, 2024, representing 50% of the total contract value.
+
+11. Initially, Quantum appeared to be performing adequately, delivering Phase 1 deliverables on June 28, 2024, which passed TechVision's quality assurance testing with minor defects that were subsequently corrected.
+
+12. However, beginning in August 2024, Quantum's performance began to deteriorate significantly. Phase 2 deliverables, due September 30, 2024, were delayed until October 28, 2024, and contained numerous critical defects including system crashes, data corruption issues, and failure to meet the specified performance benchmarks outlined in the technical specifications.
+
+13. Despite TechVision's repeated notices and requests for corrective action, Quantum failed to remedy the defects. On November 15, 2024, during a project review meeting attended by executives from both companies, Quantum's Chief Technology Officer, Marcus Chen, admitted that Quantum had assigned junior developers to the Project without TechVision's knowledge or consent, in direct violation of the MSA's staffing requirements which specified that only senior developers with specific certifications would work on the Project.
+
+14. Mr. Chen further disclosed that Quantum had simultaneously undertaken three other large-scale projects during the same period, causing resource constraints and preventing Quantum from dedicating the necessary personnel and attention to TechVision's Project as required under the MSA.
+
+15. Phase 3 deliverables, due December 31, 2024, were never completed. On January 8, 2025, Quantum informed TechVision via email that it would be unable to continue with the Project due to "unforeseen technical challenges" and proposed terminating the MSA.
+
+16. Upon information and belief, Quantum deliberately misrepresented its capacity to perform the services at the time of contract execution, knowing that it lacked sufficient qualified personnel and resources to fulfill its obligations under the MSA.
+
+17. TechVision has suffered substantial damages as a result of Quantum's breaches, including but not limited to: (a) the $1,425,000 paid to Quantum for incomplete and defective work; (b) the cost of engaging replacement developers to complete the Project, estimated at $2,100,000; (c) lost business opportunities due to delays in bringing VisionCRM to market, estimated at $3,500,000; and (d) damage to TechVision's reputation with its clients who were anticipating the enhanced CRM features.
+
+MISAPPROPRIATION OF CONFIDENTIAL INFORMATION
+
+18. During the course of the Project, TechVision provided Quantum with access to highly confidential and proprietary information, including source code, technical specifications, business strategies, client lists, and trade secrets related to VisionCRM and TechVision's broader business operations.
+
+19. The MSA contained explicit provisions requiring Quantum to maintain the confidentiality of all TechVision information and to return or destroy all confidential materials upon termination of the agreement.
+
+20. On January 22, 2025, TechVision discovered that Quantum had failed to return or destroy TechVision's confidential information as required. Moreover, TechVision learned through industry contacts that Quantum was marketing a competing CRM product called "QuantumConnect" that bore striking similarities to VisionCRM's proprietary features and architecture.
+
+21. Upon information and belief, Quantum has misappropriated TechVision's confidential information and trade secrets to develop its own competing product, in direct violation of the MSA's confidentiality provisions and California trade secret laws.
+
+22. TechVision also discovered that three of its senior software engineers had been contacted by Quantum recruiters in February 2025, offering them employment positions, in direct violation of the MSA's non-solicitation covenant.
+
+EFFORTS TO RESOLVE
+
+23. TechVision made numerous good faith efforts to resolve these disputes prior to filing this action. On January 15, 2025, TechVision's General Counsel sent a detailed letter to Quantum outlining the breaches and requesting immediate corrective action and return of confidential materials.
+
+24. Quantum's response, received on January 29, 2025, denied all allegations of breach and refused to return confidential materials or cease development of QuantumConnect.
+
+25. On February 10, 2025, the parties participated in a mediation session facilitated by a retired Superior Court judge. The mediation was unsuccessful, with Quantum refusing to acknowledge any wrongdoing or offer any meaningful resolution.
+
+26. TechVision has no adequate remedy at law and has been forced to file this action to protect its rights and recover its losses.
+
+FIRST CAUSE OF ACTION
+(Breach of Contract)
+
+27. TechVision incorporates by reference paragraphs 1 through 26 as if fully set forth herein.
+
+28. TechVision and Quantum entered into a valid and enforceable contract, namely the MSA dated March 15, 2024.
+
+29. TechVision performed all of its obligations under the MSA, including making timely milestone payments totaling $1,425,000.
+
+30. Quantum breached the MSA by: (a) failing to deliver Phase 3 deliverables; (b) delivering defective Phase 2 deliverables that failed to meet the technical specifications; (c) assigning unqualified personnel to the Project in violation of staffing requirements; (d) failing to dedicate sufficient resources to the Project; (e) abandoning the Project before completion; and (f) failing to return or destroy confidential information upon termination.
+
+31. As a direct and proximate result of Quantum's breaches, TechVision has suffered damages in an amount to be proven at trial, but believed to exceed $7,000,000, including wasted payments, costs to complete the Project, lost business opportunities, and reputational harm.
+
+32. TechVision is entitled to recover all damages caused by Quantum's breaches, including consequential damages, as such damages were foreseeable and within the contemplation of the parties at the time of contract formation.
+
+SECOND CAUSE OF ACTION
+(Breach of Fiduciary Duty)
+
+33. TechVision incorporates by reference paragraphs 1 through 32 as if fully set forth herein.
+
+34. By entering into the MSA and accepting access to TechVision's confidential information and trade secrets, Quantum assumed fiduciary duties to TechVision, including duties of loyalty, good faith, and fair dealing.
+
+35. Quantum breached these fiduciary duties by: (a) misappropriating TechVision's confidential information and trade secrets; (b) using TechVision's proprietary information to develop a competing product; (c) failing to act in TechVision's best interests by diverting resources to other projects; and (d) soliciting TechVision's employees in violation of the non-solicitation covenant.
+
+36. As a direct and proximate result of Quantum's breach of fiduciary duty, TechVision has suffered damages in an amount to be proven at trial, but believed to exceed $5,000,000.
+
+THIRD CAUSE OF ACTION
+(Fraud and Intentional Misrepresentation)
+
+37. TechVision incorporates by reference paragraphs 1 through 36 as if fully set forth herein.
+
+38. At the time of entering into the MSA, Quantum made material representations to TechVision regarding its capacity, expertise, and resources to perform the services required under the agreement.
+
+39. These representations were false when made. Upon information and belief, Quantum knew at the time of contract execution that it lacked sufficient qualified personnel and resources to fulfill its obligations, but deliberately concealed these facts to secure the contract.
+
+40. Quantum made these misrepresentations with the intent to induce TechVision to enter into the MSA and make substantial payments.
+
+41. TechVision reasonably relied on Quantum's misrepresentations in entering into the MSA and making payments totaling $1,425,000.
+
+42. As a direct and proximate result of Quantum's fraud, TechVision has suffered damages in an amount to be proven at trial, but believed to exceed $7,000,000.
+
+43. Quantum's conduct was malicious, oppressive, and fraudulent, justifying an award of punitive damages in an amount sufficient to punish Quantum and deter similar conduct in the future.
+
+PRAYER FOR RELIEF
+
+WHEREFORE, Plaintiff TechVision Solutions Inc. respectfully requests that this Court enter judgment in its favor and against Defendant Quantum Digital Services LLC as follows:
+
+1. Compensatory damages in an amount to be proven at trial, but believed to exceed $7,000,000;
+
+2. Punitive damages in an amount to be determined by the Court;
+
+3. Restitution of all payments made to Quantum under the MSA, in the amount of $1,425,000;
+
+4. Injunctive relief prohibiting Quantum from using, disclosing, or exploiting any of TechVision's confidential information or trade secrets;
+
+5. Injunctive relief requiring Quantum to immediately cease development and marketing of QuantumConnect or any product derived from TechVision's confidential information;
+
+6. Pre-judgment and post-judgment interest at the maximum rate allowed by law;
+
+7. Attorneys' fees and costs of suit; and
+
+8. Such other and further relief as the Court deems just and proper.
+
+JURY DEMAND
+
+Plaintiff demands a trial by jury on all issues so triable.
+
+Dated: March 10, 2025
+
+Respectfully submitted,
+
+MORRISON & ASSOCIATES LLP
+
+By: _________________________
+Jennifer Morrison, Esq.
+State Bar No. 234567
+David Chen, Esq.
+State Bar No. 345678
+1500 California Street, Suite 2000
+San Francisco, California 94109
+Telephone: (415) 555-0100
+Facsimile: (415) 555-0101
+Email: jmorrison@morrisonlaw.com
+
+Attorneys for Plaintiff
+TECHVISION SOLUTIONS INC.

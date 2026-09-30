@@ -1,0 +1,385 @@
+DEPOSITION TRANSCRIPT
+
+IN THE SUPERIOR COURT OF THE STATE OF CALIFORNIA
+COUNTY OF SAN FRANCISCO
+
+TECHVISION SOLUTIONS INC.,
+                    Plaintiff,
+v.
+QUANTUM DIGITAL SERVICES LLC,
+                    Defendant.
+
+Case No. CV-2025-004892
+
+DEPOSITION OF MARCUS CHEN
+February 14, 2025
+
+Deposition of MARCUS CHEN, taken on behalf of Plaintiff, at the offices of Morrison & Associates LLP, 1500 California Street, Suite 2000, San Francisco, California, commencing at 9:05 a.m. on Thursday, February 14, 2025, before Lisa Anderson, CSR No. 8765, Certified Shorthand Reporter.
+
+APPEARANCES:
+
+For Plaintiff TechVision Solutions Inc.:
+    Jennifer Morrison, Esq.
+    David Chen, Esq.
+    MORRISON & ASSOCIATES LLP
+    1500 California Street, Suite 2000
+    San Francisco, California 94109
+
+For Defendant Quantum Digital Services LLC:
+    Gregory Mitchell, Esq.
+    Amanda Torres, Esq.
+    MITCHELL & BARNES LLP
+    2000 Sand Hill Road, Suite 500
+    Menlo Park, California 94025
+
+Also Present:
+    Sarah Martinez, CEO, TechVision Solutions Inc.
+    Robert Thompson, Managing Partner, Quantum Digital Services LLC
+
+=================================================================
+
+MARCUS CHEN, having been first duly sworn, was examined and testified as follows:
+
+EXAMINATION BY MS. MORRISON:
+
+Q: Good morning, Mr. Chen. Please state your full name for the record.
+
+A: Marcus Chen. M-A-R-C-U-S C-H-E-N.
+
+Q: And you understand that you're under oath today?
+
+A: Yes, I do.
+
+Q: You're the Chief Technology Officer of Quantum Digital Services LLC, correct?
+
+A: That's correct.
+
+Q: How long have you held that position?
+
+A: Since 2019, about six years now.
+
+Q: And what are your responsibilities as CTO?
+
+A: I oversee all technical operations, including software development projects, technology strategy, and I manage our development teams.
+
+Q: So you would have been directly involved in the VisionCRM project for TechVision Solutions, correct?
+
+A: Yes, I was the primary point of contact for TechVision and I oversaw the technical aspects of that project.
+
+Q: Let me show you what's been marked as Exhibit 1. Do you recognize this document?
+
+A: Yes, this is the Master Services Agreement between Quantum and TechVision dated March 15, 2024.
+
+Q: And you were involved in negotiating this agreement?
+
+A: Yes, I worked with our business development team and legal counsel on the technical aspects and staffing commitments.
+
+Q: Let's turn to Article 4 of the agreement, which deals with personnel and staffing. Do you see that section?
+
+A: Yes, I see it.
+
+Q: Can you read Article 4.3 out loud for the record?
+
+A: "All personnel assigned to the Project must possess the qualifications, certifications, and experience levels specified in Exhibit B. Contractor represents and warrants that all assigned personnel meet these requirements."
+
+Q: And Exhibit B specifies minimum eight years of experience for developers, correct?
+
+A: Yes, that's what it says.
+
+Q: Did you personally review Exhibit B before signing the agreement?
+
+A: Yes, I reviewed all the technical requirements.
+
+Q: And did you believe at the time that Quantum could meet those staffing requirements?
+
+MR. MITCHELL: Objection. Calls for speculation about his state of mind.
+
+MS. MORRISON: I'm asking what he believed at the time. I think he can answer that.
+
+MR. MITCHELL: You may answer.
+
+A: I believed we could meet the requirements, yes.
+
+Q: Now, let me show you Exhibit 5. This is a LinkedIn profile for Raj Patel. Do you know Mr. Patel?
+
+A: Yes, he's one of our developers.
+
+Q: And according to this profile, he has two years of professional experience and lists himself as a "Junior Developer." Do you see that?
+
+A: I see what the profile says.
+
+Q: Did Mr. Patel work on the VisionCRM project?
+
+A: Yes, he contributed to some portions of the project.
+
+Q: But he doesn't meet the eight-year experience requirement specified in the contract, does he?
+
+A: No, he doesn't have eight years of experience.
+
+Q: Why was he assigned to a project that required minimum eight years of experience?
+
+A: We were dealing with resource constraints and needed additional developers to meet the deadline.
+
+Q: Resource constraints? Can you explain what you mean by that?
+
+A: We had taken on several large projects during the same period, and our senior developers were spread across multiple engagements.
+
+Q: How many other major projects did Quantum have during the VisionCRM project timeline?
+
+A: I believe there were three other significant projects running concurrently.
+
+Q: Let me show you Exhibit 3, which is an email you sent to Sarah Martinez on March 8, 2024. Do you recognize this email?
+
+A: Yes, I wrote that.
+
+Q: Can you read the third paragraph where you discuss your development team?
+
+A: "Our senior development team has extensive experience with enterprise CRM platforms, AI/ML integration, and third-party system integrations. We recently completed a similar project for GlobalTech Industries that was delivered two weeks ahead of schedule and under budget."
+
+Q: And then you say, "We have 15 senior developers currently available, and I can commit our top architects to your project starting April 1st." Do you see that?
+
+A: Yes.
+
+Q: Was that statement true when you wrote it?
+
+A: We had 15 developers on staff at that time.
+
+Q: But did you have 15 senior developers available specifically for the VisionCRM project?
+
+A: Not exclusively available, no. They were working on other projects as well.
+
+Q: So when you said "15 senior developers currently available," you meant available across all of Quantum's projects, not available to dedicate to VisionCRM?
+
+A: I suppose that's a fair characterization, yes.
+
+Q: And you knew that TechVision was relying on having dedicated senior developers for their project, correct?
+
+MR. MITCHELL: Objection. Lacks foundation.
+
+MS. MORRISON: The contract requires 80% dedication of key personnel in Article 4.4. May I have that read back?
+
+THE REPORTER: "Key personnel shall dedicate at least 80% of their working time to the Project during their assigned phases."
+
+MS. MORRISON: You may answer.
+
+A: I understood they wanted dedicated resources, yes.
+
+Q: But Quantum didn't provide that, did it?
+
+A: We had challenges with resource allocation. The project turned out to be more complex than we initially estimated.
+
+Q: Mr. Chen, when did you first realize that Quantum might not be able to complete the VisionCRM project as specified in the contract?
+
+A: Probably around August or September 2024, when we started having issues with the Phase 2 deliverables.
+
+Q: What were those issues?
+
+A: The AI analytics engine was proving more difficult to develop than anticipated. We were having performance problems and the machine learning models weren't producing consistent results.
+
+Q: And why was that? Was it due to the technical complexity or due to the experience level of your developers?
+
+A: I think it was a combination of both. The requirements were technically challenging, and in hindsight, we should have assigned more experienced developers to that component.
+
+Q: You're admitting that you had less experienced developers working on complex technical components?
+
+MR. MITCHELL: Objection. Argumentative.
+
+A: We had a mix of experience levels on the team. Some of the more junior developers were assigned to less critical components, but they were supported by senior developers.
+
+Q: Let me direct your attention to Exhibit 7, which is TechVision's code repository analysis. It shows that Raj Patel, with two years of experience, committed 2,847 lines of code to the AI analytics engine module. Would you characterize that as a "less critical component"?
+
+A: The AI module was definitely critical. That was an oversight.
+
+Q: An oversight that resulted in TechVision receiving defective deliverables with a 23% test failure rate, correct?
+
+MR. MITCHELL: Objection. Argumentative and assumes facts not in evidence.
+
+MS. MORRISON: I'll rephrase. Are you familiar with TechVision's QA test results showing a 23% failure rate on Phase 2 deliverables?
+
+A: I'm aware that they reported significant quality issues, yes.
+
+Q: And those quality issues were documented in multiple emails from TechVision's CTO, Jennifer Thompson, correct?
+
+A: Yes, we received detailed feedback about the defects.
+
+Q: Let me show you Exhibit 10, the email from Ms. Thompson dated October 15, 2024. She identifies five major categories of defects including system crashes, inconsistent ML model results, performance issues, data corruption, and incomplete documentation. Do you see that?
+
+A: Yes, I see it.
+
+Q: Did you review the code that was causing these issues?
+
+A: I reviewed some of it, and I had my technical leads do a more detailed analysis.
+
+Q: And what did you find?
+
+A: There were definitely code quality issues. Some of the algorithms were inefficient, error handling was inadequate in places, and the documentation wasn't up to our standards.
+
+Q: Weren't up to your standards, or weren't up to industry standards?
+
+A: Both, I suppose.
+
+Q: Let's talk about the meeting on November 15, 2024. You attended that meeting at TechVision's offices, correct?
+
+A: Yes, along with Robert Thompson and our VP of Operations.
+
+Q: What was discussed at that meeting?
+
+A: TechVision expressed serious concerns about the quality of our work and the staffing issues. They wanted to understand what had gone wrong and what our plan was to fix it.
+
+Q: And what did you tell them?
+
+A: I admitted that we had made mistakes with staffing, that we had been stretched thin across multiple projects, and that we hadn't assigned personnel with the required experience levels.
+
+Q: So you acknowledged to TechVision that you were in breach of the staffing requirements in the contract?
+
+MR. MITCHELL: Objection. Misstates his testimony.
+
+A: I acknowledged that we hadn't met the staffing requirements as specified in the contract, yes.
+
+Q: Did you tell TechVision at that meeting that Quantum had taken on three other major projects during the VisionCRM timeline?
+
+A: I believe that came up, yes.
+
+Q: And how did TechVision's CEO, Sarah Martinez, respond to that information?
+
+A: She was not happy. She felt that we should have informed them earlier about resource constraints and that we shouldn't have committed to the project if we couldn't staff it properly.
+
+Q: Was she right?
+
+MR. MITCHELL: Objection. Calls for a legal conclusion.
+
+MS. MORRISON: I'm not asking for a legal conclusion. I'm asking for his personal opinion about whether TechVision's concerns were justified.
+
+MR. MITCHELL: You may answer.
+
+A: In hindsight, we should have been more transparent about our capacity and resource situation.
+
+Q: Let's turn to the decision to terminate the project. When did Quantum decide it couldn't complete the VisionCRM project?
+
+A: We had internal discussions in late December 2024 and early January 2025. It became clear that we were falling further behind and that the technical challenges were beyond what we could handle with our current team.
+
+Q: Beyond what you could handle? Can you explain that?
+
+A: The third-party integrations in Phase 3 were proving extremely complex, especially with SAP and Oracle systems. We were also still trying to fix the Phase 2 defects, and our team was overwhelmed.
+
+Q: Did you consider bringing in outside consultants or contractors to supplement your team?
+
+A: We discussed it, but it would have been very expensive and we weren't confident it would solve the fundamental issues.
+
+Q: What were the fundamental issues?
+
+A: We had underestimated the complexity of the project, we didn't have the right expertise on our team, and we had made architectural decisions early on that were proving difficult to work with.
+
+Q: Architectural decisions in Phase 1?
+
+A: Some, yes.
+
+Q: So even the Phase 1 work that TechVision accepted had problems?
+
+A: There were some technical debt issues in Phase 1 that made the later phases more difficult.
+
+Q: Let's talk about QuantumConnect. Are you familiar with that product?
+
+A: Yes, it's a CRM platform that Quantum launched in January 2025.
+
+Q: And you were involved in its development?
+
+A: I oversaw the development team, yes.
+
+Q: When did development of QuantumConnect begin?
+
+A: The initial concept and planning started in mid-2024.
+
+Q: Mid-2024? So during the time Quantum was working on VisionCRM for TechVision?
+
+A: Yes, but they were separate projects.
+
+Q: Separate projects with similar features? Let me show you Exhibit 15, which is a marketing brochure for QuantumConnect. It advertises "AI-powered customer behavior prediction," "natural language processing for ticket classification," and "real-time synchronization with Salesforce, SAP, and Oracle." Those are the same features that were specified in the VisionCRM contract, aren't they?
+
+MR. MITCHELL: Objection. I'm going to instruct the witness not to answer. This line of questioning implicates trade secret and confidential information. We're prepared to brief this issue for the court if necessary.
+
+MS. MORRISON: Your Honor—well, there's no judge here, but Mr. Mitchell, I think this is relevant to our fraud and misappropriation claims. The timing and feature similarity are directly at issue.
+
+MR. MITCHELL: We'll provide responses to these questions in writing after consulting with my client further, but for now, I'm instructing him not to answer questions about QuantumConnect's development or features.
+
+MS. MORRISON: Okay, we'll note your objection and instruction, and we'll take that up with the court. Let me move on to another topic.
+
+Q: Mr. Chen, did Quantum return all of TechVision's confidential information and materials after terminating the project?
+
+A: We returned the materials we had in our possession.
+
+Q: What materials did you return?
+
+A: The source code we had developed, technical documentation, and other project files.
+
+Q: Did you maintain any copies of TechVision's technical specifications, requirements documents, or architectural designs?
+
+A: We may have copies in our backup systems. I'm not sure what remains in our archives.
+
+Q: Have you made any effort to destroy or delete those materials as required by the confidentiality provisions in Article 5.4 of the MSA?
+
+A: I would have to check with our IT department about what's been done to remove TechVision materials from our systems.
+
+Q: So as of today, sitting here, you don't know whether Quantum still has TechVision's confidential information in its systems?
+
+A: Not with certainty, no.
+
+Q: The contract required return or destruction within ten days of termination. That was January 8, 2025. Today is February 14, 2025. That's more than five weeks ago. Why hasn't this been done?
+
+MR. MITCHELL: Objection. Argumentative.
+
+A: I can't speak to why it hasn't been completed. That's not my area of responsibility.
+
+Q: As CTO, aren't you responsible for the company's technical systems and data?
+
+A: In general, yes, but the return of client materials would typically be handled by project managers and legal department working with IT.
+
+Q: Did you ever personally use TechVision's confidential information for any purpose other than the VisionCRM project?
+
+A: No, I did not.
+
+Q: Did you share TechVision's confidential information with anyone at Quantum who was working on QuantumConnect?
+
+MR. MITCHELL: Same objection and instruction not to answer.
+
+MS. MORRISON: Noted. Let me ask you this, Mr. Chen: Do you believe that Quantum properly performed its obligations under the Master Services Agreement with TechVision?
+
+MR. MITCHELL: Objection. That calls for a legal conclusion.
+
+MS. MORRISON: I'm asking for his personal belief based on his knowledge as CTO and project leader.
+
+MR. MITCHELL: You may answer.
+
+A: I believe we tried our best under difficult circumstances. In hindsight, there are things we should have done differently. We should have been more honest about our resource constraints, we should have assigned more experienced developers from the start, and we should have communicated more proactively when problems arose.
+
+Q: So you're acknowledging that Quantum failed to meet its obligations?
+
+A: I'm acknowledging that we didn't deliver what we promised and that TechVision has legitimate concerns about our performance.
+
+MS. MORRISON: I don't have any further questions at this time. We may need to bring Mr. Chen back for a continued deposition after we receive documents in response to our pending production requests.
+
+MR. MITCHELL: Understood.
+
+[Deposition concluded at 2:47 p.m.]
+
+=================================================================
+
+CERTIFICATE OF REPORTER
+
+I, Lisa Anderson, CSR No. 8765, a Certified Shorthand Reporter, hereby certify:
+
+That the witness in the foregoing deposition was by me duly sworn to testify the truth, the whole truth, and nothing but the truth;
+
+That said deposition is a true record of the testimony given by said witness;
+
+That I am neither counsel for, nor related to, any party to said action, nor in any way interested in the outcome thereof.
+
+IN WITNESS WHEREOF, I have this 14th day of February, 2025, subscribed my name.
+
+_______________________________
+Lisa Anderson, CSR No. 8765
+
+END OF TRANSCRIPT
+Pages: 12
+Exhibits Referenced: 15
+Duration: 5 hours 42 minutes
