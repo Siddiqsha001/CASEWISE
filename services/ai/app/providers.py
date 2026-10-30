@@ -115,10 +115,13 @@ class GeminiEmbeddingProvider:
 
     def embed(self, texts: list[str]) -> list[list[float]]:
         import json
+        import time
         if not self.api_key:
             raise RuntimeError("GEMINI_API_KEY is missing")
 
         vectors = []
+        max_retries = 3
+
         # Process individually - use 768 dimensions for reasonable performance
         # Disable SSL verification due to Docker SSL certificate issues
         with httpx.Client(timeout=120, verify=False) as client:
@@ -128,16 +131,39 @@ class GeminiEmbeddingProvider:
                     "content": {"parts": [{"text": text}]},
                     "outputDimensionality": 768
                 }
-                response = client.post(
-                    f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:embedContent",
-                    headers={"x-goog-api-key": self.api_key},
-                    json=payload,
-                )
-                response.raise_for_status()
-                data = response.json()
-                vector = data.get("embedding", {}).get("values", [])
-                if vector:
-                    vectors.append(vector)
+
+                # Retry with exponential backoff for transient errors
+                for attempt in range(max_retries):
+                    try:
+                        response = client.post(
+                            f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:embedContent",
+                            headers={"x-goog-api-key": self.api_key},
+                            json=payload,
+                        )
+                        response.raise_for_status()
+                        data = response.json()
+                        vector = data.get("embedding", {}).get("values", [])
+                        if vector:
+                            vectors.append(vector)
+                        break  # Success, exit retry loop
+                    except httpx.HTTPStatusError as e:
+                        if e.response.status_code == 503 and attempt < max_retries - 1:
+                            # Retry after delay (exponential backoff)
+                            wait_time = (2 ** attempt) * 1  # 1s, 2s, 4s
+                            time.sleep(wait_time)
+                            continue
+                        elif e.response.status_code == 503:
+                            raise RuntimeError("Gemini Embedding API is temporarily unavailable. Please try again later.")
+                        else:
+                            raise
+                    except (httpx.ConnectError, httpx.TimeoutException, httpx.RequestError) as e:
+                        if attempt < max_retries - 1:
+                            # Retry network errors
+                            wait_time = (2 ** attempt) * 1
+                            time.sleep(wait_time)
+                            continue
+                        else:
+                            raise RuntimeError(f"Network error connecting to Gemini API: {str(e)[:100]}")
 
         return vectors
 

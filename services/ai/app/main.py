@@ -21,9 +21,12 @@ from pydantic import BaseModel, Field
 from qdrant_client import QdrantClient, models
 from .providers import embedding_provider, llm_provider
 from .storage import put_document, read_document
+from .demo_qa import get_predefined_questions, get_demo_answer, SUGGESTED_QUESTIONS
+from .demo_analysis import get_demo_analysis
 
 app = FastAPI(title="CaseWise AI and Case Services")
 DB_URL = os.getenv("SUPABASE_DB_URL") or os.environ["DATABASE_URL"]
+DEMO_MODE = os.getenv("DEMO_MODE", "false").lower() in ("true", "1", "yes")
 HOSTED_DB = bool(os.getenv("SUPABASE_DB_URL"))
 AUTH_URL = os.getenv("AUTH_URL", "http://auth:9999")
 SUPABASE_PUBLISHABLE_KEY = os.getenv("SUPABASE_PUBLISHABLE_KEY", "")
@@ -390,10 +393,35 @@ def search_case(case_id: str, body: Question, user=Depends(principal)):
         raise HTTPException(503, f"Search unavailable: {str(exc)[:180]}") from exc
 
 
+@app.get("/api/cases/{case_id}/suggested-questions")
+def get_suggested_questions(case_id: str, user=Depends(principal)):
+    """Get suggested questions for the case (demo mode)."""
+    with db(user["id"]) as conn:
+        require_case(conn, case_id, lawyer=True)
+    return {"questions": SUGGESTED_QUESTIONS, "demoMode": DEMO_MODE}
+
+
 @app.post("/api/cases/{case_id}/ask")
 async def ask_case(case_id: str, body: Question, user=Depends(principal)):
     with db(user["id"]) as conn:
         case = require_case(conn, case_id, lawyer=True)
+
+    # Demo mode: return predefined answers without API calls
+    if DEMO_MODE:
+        demo_response = get_demo_answer(body.question)
+        return {
+            "answer": demo_response["answer"],
+            "citations": [
+                {
+                    "documentName": cite["documentName"],
+                    "excerpt": cite["excerpt"]
+                }
+                for cite in demo_response["citations"]
+            ],
+            "disclaimer": DISCLAIMER,
+            "demoMode": True
+        }
+
     try:
         rows = retrieve_chunks(case["id"], body.question, user["id"])
         if not rows:
@@ -415,6 +443,29 @@ async def ask_case(case_id: str, body: Question, user=Depends(principal)):
 async def analyze_case(case_id: str, user=Depends(principal)):
     with db(user["id"]) as conn:
         case = require_case(conn, case_id, lawyer=True)
+
+    # Demo mode: return predefined analysis after realistic delay
+    if DEMO_MODE:
+        import asyncio
+        import random
+        # Simulate processing time: 3-4 seconds
+        await asyncio.sleep(random.uniform(3.0, 4.0))
+
+        demo_result = get_demo_analysis()
+
+        # Save to database for consistency
+        with db(user["id"]) as conn:
+            row = one(conn, "INSERT INTO ai_analyses(case_id,kind,result,model) VALUES (%s,'CASE_REVIEW',%s::jsonb,%s) RETURNING id,created_at",
+                     (case["id"], json.dumps(demo_result), "demo-mode"))
+
+        return {
+            "id": str(row["id"]),
+            "createdAt": row["created_at"].isoformat(),
+            **demo_result
+        }
+
+    # Real mode: process documents
+    with db(user["id"]) as conn:
         rows = conn.execute("""SELECT ch.id,ch.content,ch.page_number,d.id AS document_id,d.file_name
             FROM document_chunks ch JOIN documents d ON d.id=ch.document_id AND d.case_id=ch.case_id
             WHERE ch.case_id=%s AND d.processing_status='READY' ORDER BY d.created_at,ch.page_number LIMIT 12""", (case["id"],)).fetchall()
@@ -461,6 +512,25 @@ def list_resource(case_id: str, resource: str, user=Depends(principal)):
         case = require_case(conn, case_id)
         rows = conn.execute(f"SELECT * FROM {resource} WHERE case_id=%s ORDER BY created_at DESC LIMIT 200", (case["id"],)).fetchall()
     return as_json(rows)
+
+
+@app.post("/api/cases/{case_id}/payments/{payment_id}/mark-paid")
+def mark_payment_paid(case_id: str, payment_id: str, body: ItemIn, user=Depends(principal)):
+    """Client marks a payment as paid with reference number"""
+    with db(user["id"]) as conn:
+        case = require_case(conn, case_id)
+        # Verify payment exists and belongs to case
+        payment = one(conn, "SELECT * FROM payments WHERE id=%s AND case_id=%s", (payment_id, case["id"]))
+        if not payment:
+            raise HTTPException(404, "Payment not found")
+        # Update payment status
+        reference = body.data.get("payment_reference", "")
+        conn.execute(
+            "UPDATE payments SET status='PAID', amount_paid=total_fee, paid_at=now(), payment_reference=%s WHERE id=%s",
+            (reference, payment_id)
+        )
+        updated = one(conn, "SELECT * FROM payments WHERE id=%s", (payment_id,))
+    return as_json(updated)
 
 
 @app.post("/api/cases/{case_id}/{resource}")

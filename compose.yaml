@@ -87,6 +87,7 @@ services:
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GEMINI_ANSWER_MODEL: ${GEMINI_ANSWER_MODEL:-gemini-2.5-flash}
       GEMINI_ANALYSIS_MODEL: ${GEMINI_ANALYSIS_MODEL:-gemini-2.5-flash}
+      DEMO_MODE: ${DEMO_MODE:-false}
       DOCUMENT_DIR: /data/documents
     volumes:
       - documents_data:/data/documents
