@@ -3,11 +3,15 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Shell from '../../../components/Shell'
+import Calendar from '../../../components/Calendar'
+import Notifications from '../../../components/Notifications'
 import { api, disclaimer, getSession } from '../../../lib/client'
 
 const tabs = ['Overview', 'Documents', 'Ask CaseWise', 'AI Analysis', 'Timeline', 'Claims', 'Evidence', 'Hearings', 'Tasks', 'Payments', 'Notes']
 const map = { Timeline: 'timeline_events', Claims: 'claims', Evidence: 'evidence', Hearings: 'hearings', Tasks: 'tasks', Payments: 'payments', Notes: 'case_notes' }
 const fields = { Timeline: [['event_date', 'date'], ['description', 'text']], Claims: [['statement', 'text']], Evidence: [['name', 'text'], ['type', 'text'], ['description', 'text']], Hearings: [['starts_at', 'datetime-local'], ['court', 'text'], ['purpose', 'text']], Tasks: [['title', 'text'], ['due_at', 'datetime-local']], Payments: [['total_fee', 'number'], ['amount_paid', 'number'], ['due_date', 'date']], Notes: [['body', 'text']] }
+const aiCategoryMap = { timeline: 'timeline_events', claims: 'claims', evidence: 'evidence', possibleEvidenceGaps: 'case_notes', potentialContradictions: 'case_notes', potentialCounterarguments: 'case_notes', hearingPreparation: 'tasks' }
+
 export default function CasePage() {
   const { id } = useParams(), router = useRouter()
   const [item, setItem] = useState(null), [tab, setTab] = useState('Overview')
@@ -16,29 +20,311 @@ export default function CasePage() {
   const [inviteStatus, setInviteStatus] = useState('')
   const [analyses, setAnalyses] = useState([])
   const [suggestedQuestions, setSuggestedQuestions] = useState([])
-  const [demoMode, setDemoMode] = useState(false)
+  const [editing, setEditing] = useState(null)
+  const [showAddForm, setShowAddForm] = useState(false)
+
   useEffect(() => { if (!getSession()) { router.push('/'); return } api(`/cases/${id}`).then(setItem).catch(e => setError(e.message)) }, [id, router])
-  useEffect(() => { if (!item) return; setError(''); if (tab === 'Documents' || tab === 'Overview') api(`/cases/${id}/documents`).then(setDocs).catch(e => setError(e.message)); if (tab === 'AI Analysis') api(`/cases/${id}/ai_analyses`).then(setAnalyses).catch(e => setError(e.message)); if (tab === 'Ask CaseWise') api(`/cases/${id}/suggested-questions`).then(data => { setSuggestedQuestions(data.questions || []); setDemoMode(data.demoMode || false) }).catch(() => {}); if (map[tab]) api(`/cases/${id}/${map[tab]}`).then(setRecords).catch(e => setError(e.message)) }, [id, item, tab])
+  useEffect(() => {
+    if (!item) return;
+    setError('');
+    setShowAddForm(false);
+    setEditing(null);
+    setDraft({});
+    if (tab === 'Documents' || tab === 'Overview') api(`/cases/${id}/documents`).then(setDocs).catch(e => setError(e.message));
+    if (tab === 'AI Analysis') { setAnalyses([]) };
+    if (tab === 'Ask CaseWise') api(`/cases/${id}/suggested-questions`).then(data => { setSuggestedQuestions(data.questions || []) }).catch(() => {});
+    if (map[tab]) api(`/cases/${id}/${map[tab]}`).then(setRecords).catch(e => setError(e.message))
+  }, [id, item, tab])
+
   async function upload(e) {
     const files = Array.from(e.target.files || []); setBusy(true); setError('')
     try { for (const file of files) { const body = new FormData(); body.append('file', file); await api(`/cases/${id}/documents`, { method: 'POST', body }) } setDocs(await api(`/cases/${id}/documents`)) } catch (e) { setError(e.message) } finally { setBusy(false) }
   }
   async function ask(e) { e?.preventDefault(); setBusy(true); setError(''); setAnswer(null); try { setAnswer(await api(`/cases/${id}/ask`, { method: 'POST', body: JSON.stringify({ question }) })) } catch (e) { setError(e.message) } finally { setBusy(false) } }
   function selectQuestion(q) { setQuestion(q); setAnswer(null); setTimeout(() => ask(), 100) }
-  async function add(e) { e.preventDefault(); setBusy(true); setError(''); try { await api(`/cases/${id}/${map[tab]}`, { method: 'POST', body: JSON.stringify({ data: draft }) }); setRecords(await api(`/cases/${id}/${map[tab]}`)); setDraft({}) } catch (e) { setError(e.message) } finally { setBusy(false) } }
+  async function add(e) { e.preventDefault(); setBusy(true); setError(''); try { await api(`/cases/${id}/${map[tab]}`, { method: 'POST', body: JSON.stringify({ data: draft }) }); setRecords(await api(`/cases/${id}/${map[tab]}`)); setDraft({}); setShowAddForm(false) } catch (e) { setError(e.message) } finally { setBusy(false) } }
+  async function editRecord(recordId, e) { e.preventDefault(); setBusy(true); setError(''); try { await api(`/cases/${id}/${map[tab]}/${recordId}`, { method: 'PUT', body: JSON.stringify({ data: draft }) }); setRecords(await api(`/cases/${id}/${map[tab]}`)); setDraft({}); setEditing(null) } catch (e) { setError(e.message) } finally { setBusy(false) } }
+  async function deleteRecord(recordId) { if (!confirm('Are you sure you want to delete this item?')) return; setBusy(true); setError(''); try { await api(`/cases/${id}/${map[tab]}/${recordId}`, { method: 'DELETE' }); setRecords(await api(`/cases/${id}/${map[tab]}`)) } catch (e) { setError(e.message) } finally { setBusy(false) } }
+  function startEdit(record) { setEditing(record.id); setDraft(record); setShowAddForm(false) }
+  function cancelEdit() { setEditing(null); setDraft({}); setShowAddForm(false) }
   async function openDocument(docId) { try { const blob = await api(`/cases/${id}/documents/${docId}/file`); const url = URL.createObjectURL(blob); window.open(url, '_blank'); setTimeout(() => URL.revokeObjectURL(url), 60000) } catch (e) { setError(e.message) } }
   async function invite() { setError(''); try { await api(`/cases/${id}/members`, { method: 'POST', body: JSON.stringify({ email: item.client.email }) }); setInviteStatus('Client access granted') } catch (e) { setError(e.message) } }
   async function analyze() { setBusy(true); setError(''); try { await api(`/cases/${id}/analyze`, { method: 'POST' }); setAnalyses(await api(`/cases/${id}/ai_analyses`)) } catch (e) { setError(e.message) } finally { setBusy(false) } }
+  async function addFromAI(category, item) {
+    setBusy(true); setError('');
+    try {
+      const endpoint = aiCategoryMap[category];
+      if (!endpoint) { setError('Cannot map this category to a section'); return; }
+
+      let data = {};
+      if (endpoint === 'timeline_events') {
+        data = { description: item.text, event_date: new Date().toISOString().split('T')[0] };
+      } else if (endpoint === 'claims') {
+        data = { statement: item.text };
+      } else if (endpoint === 'evidence') {
+        data = { name: item.text.substring(0, 100), description: item.text, type: 'AI Suggested' };
+      } else if (endpoint === 'case_notes') {
+        data = { body: `[${category}] ${item.text}` };
+      } else if (endpoint === 'tasks') {
+        data = { title: item.text.substring(0, 100) };
+      }
+
+      await api(`/cases/${id}/${endpoint}`, { method: 'POST', body: JSON.stringify({ data }) });
+      alert('✓ Added to ' + Object.keys(map).find(k => map[k] === endpoint));
+    } catch (e) { setError(e.message) } finally { setBusy(false) }
+  }
   async function markPaid(paymentId) { setBusy(true); setError(''); try { const ref = prompt('Enter payment reference/transaction ID:'); if (ref) { await api(`/cases/${id}/payments/${paymentId}/mark-paid`, { method: 'POST', body: JSON.stringify({ data: { payment_reference: ref } }) }); setRecords(await api(`/cases/${id}/payments`)); alert('Payment marked as paid!') } } catch (e) { setError(e.message) } finally { setBusy(false) } }
   function generateUPIQR(payment) { const upiId = 'lawyer@upi'; const upiLink = `upi://pay?pa=${upiId}&pn=Legal%20Services&am=${payment.total_fee}&cu=${payment.currency}&tn=Case%20Payment`; return `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}` }
+
   if (!item) return <div className="center-card">{error || 'Loading case…'}</div>
   const lawyer = item.member_role === 'LAWYER'
-  return <Shell title={item.title} subtitle={`${item.case_number || 'No case number'} · ${item.court || 'Court not set'}`} role={item.member_role}><div className="case-heading"><Link href="/" className="back">← All cases</Link><span className={`badge ${item.status.toLowerCase()}`}>{item.status}</span></div><div className="tabs">{tabs.filter(t => lawyer || !['Ask CaseWise', 'AI Analysis', 'Notes'].includes(t)).map(t => <button key={t} className={tab === t ? 'active' : ''} onClick={() => setTab(t)}>{t}</button>)}</div>{error && <div className="error">{error}</div>}
-    {tab === 'Overview' && <div className="overview-grid"><section className="panel"><div className="eyebrow">CASE SUMMARY</div><h2>{item.main_issue || 'Main issue not set'}</h2><p className="body-copy">{item.description || 'Add case details to build the record.'}</p><dl><div><dt>Case type</dt><dd>{item.case_type || '—'}</dd></div><div><dt>Priority</dt><dd>{item.priority}</dd></div><div><dt>Filing date</dt><dd>{item.filing_date || '—'}</dd></div><div><dt>Client</dt><dd>{item.client?.name || '—'}</dd></div></dl>{lawyer && item.client?.email && <div className="invite"><p className="muted">Give {item.client.email} access after they create a client account.</p><button className="primary" onClick={invite}>Grant client access</button>{inviteStatus && <p>{inviteStatus}</p>}</div>}</section><section className="panel"><div className="eyebrow">DOCUMENTS</div><h2>Processing status</h2>{docs.length ? docs.map(d => <div className="file-line" key={d.id}>{d.file_name}<span className={`badge ${d.processing_status.toLowerCase()}`}>{d.processing_status}</span></div>) : <p className="muted">No documents uploaded.</p>}<button className="link-button" onClick={() => setTab('Documents')}>View documents →</button></section></div>}
-    {tab === 'Documents' && <section className="panel"><div className="panel-head"><div><div className="eyebrow">CASE SOURCES</div><h2>Documents</h2></div>{lawyer && <label className="primary upload">{busy ? 'Uploading…' : '+ Upload documents'}<input type="file" accept=".pdf,.docx,.txt" multiple onChange={upload} disabled={busy} /></label>}</div>{docs.length ? docs.map(d => <div className="file-line" key={d.id}><button className="link-button" onClick={() => openDocument(d.id)}>{d.file_name}</button><span className={`badge ${d.processing_status.toLowerCase()}`}>{d.processing_status}</span>{d.error_message && <small className="error-text">{d.error_message}</small>}</div>) : <div className="empty">No documents yet. Upload PDF, DOCX or TXT files.</div>}<p className="muted">Refresh this tab to see updated processing states.</p></section>}
-    {tab === 'Ask CaseWise' && <section className="panel"><div className="eyebrow">CASE-SCOPED ASSISTANT</div><h2>Ask CaseWise</h2>{demoMode && <div className="info-banner">🎯 Demo Mode: Using predefined answers without API calls</div>}<p className="muted">Answers use only indexed documents in this case.</p>{error && <div className="error">{error}</div>}<form className="ask-form" onSubmit={ask}><input value={question} onChange={e => setQuestion(e.target.value)} placeholder="What evidence supports this claim?" minLength="3" required /><button className="primary" disabled={busy}>{busy ? 'Reviewing sources…' : 'Ask'}</button></form>{suggestedQuestions.length > 0 && !answer && <div className="suggested-questions"><div className="eyebrow">SUGGESTED QUESTIONS</div><div className="question-grid">{suggestedQuestions.map((q, i) => <button key={i} className="question-chip" onClick={() => selectQuestion(q)} disabled={busy}>{q}</button>)}</div></div>}{answer && <div className="answer"><div className="eyebrow">ANSWER</div><p>{answer.answer}</p>{answer.citations?.length > 0 && <><div className="eyebrow">SOURCE CITATIONS</div><div className="citations-list">{answer.citations.map((c, i) => <div className="citation-card" key={i}><strong>{c.documentName}</strong>{c.pageNumber && <span> · Page {c.pageNumber}</span>}<p className="citation-excerpt">"{c.excerpt}"</p>{c.documentId && <button className="link-button" onClick={() => openDocument(c.documentId)}>View document ↗</button>}</div>)}</div></>}</div>}<p className="disclaimer">{disclaimer}</p></section>}
-    {tab === 'AI Analysis' && <section className="panel"><div className="panel-head"><div><div className="eyebrow">SOURCE-VERIFIED SUGGESTIONS</div><h2>AI case review</h2></div><button className="primary" onClick={analyze} disabled={busy}>{busy ? 'Analyzing…' : 'Analyze processed documents'}</button></div>{demoMode && <div className="info-banner">🎯 Demo Mode: Using predefined analysis without API calls</div>}<p className="muted">Suggestions require exact quotes from processed documents. Empty sections mean there was not enough verified source text.</p>{analyses.length ? <div className="analysis-grid">{Object.entries(analyses[0].result || {}).filter(([key, value]) => Array.isArray(value)).map(([key, values]) => <div className="record" key={key}><h3>{key.replace(/([A-Z])/g, ' $1')}</h3>{values.length ? values.map((v, i) => <div className="analysis-item" key={i}><p>{v.text}</p><blockquote>"{v.quote}"</blockquote><button className="link-button" onClick={() => openDocument(v.documentId)}>{v.documentName}{v.pageNumber ? ` · Page ${v.pageNumber}` : ''} ↗</button></div>) : <p className="muted">No sourced suggestions.</p>}</div>)}</div> : <div className="empty">No analysis yet. {demoMode ? 'Click Analyze to see demo results.' : 'Process a document, then run a case review.'}</div>}<p className="disclaimer">{disclaimer}</p></section>}
-    {tab === 'Payments' && <section className="panel"><div className="panel-head"><div><div className="eyebrow">CASE RECORD</div><h2>Payments</h2></div></div>{records.length ? <div className="records">{records.map(r => <div className="record payment-record" key={r.id}><div className="payment-header"><strong>Fee: {r.total_fee} {r.currency}</strong><span className={`badge ${r.status.toLowerCase()}`}>{r.status}</span></div><p>{r.due_date && `Due: ${r.due_date}`}{r.paid_at && ` • Paid: ${new Date(r.paid_at).toLocaleDateString()}`}</p>{r.visibility && <span className="small">{r.visibility === 'CLIENT_SHARED' ? 'Shared with client' : 'Lawyer only'}</span>}{!lawyer && r.status === 'PENDING' && <div className="payment-actions"><div className="qr-container"><img src={generateUPIQR(r)} alt="Pay via UPI" className="payment-qr" /><p className="small">Scan to pay via GPay/PhonePe/Paytm</p></div><button className="primary" onClick={() => markPaid(r.id)} disabled={busy}>Mark as Paid</button></div>}{r.payment_reference && <p className="small">Ref: {r.payment_reference}</p>}</div>)}</div> : <div className="empty">No payments recorded yet.</div>}{lawyer && <form onSubmit={add} className="add-form"><h3>Add payment</h3><div className="form-grid">{fields.Payments.map(([name, type]) => <label key={name}>{name.replaceAll('_', ' ')}<input type={type} step={type === 'number' ? '0.01' : undefined} value={draft[name] || ''} onChange={e => setDraft({ ...draft, [name]: e.target.value })} required={name === fields.Payments[0][0]} /></label>)}<label>Visibility<select value={draft.visibility || 'LAWYER_ONLY'} onChange={e => setDraft({ ...draft, visibility: e.target.value })}><option value="LAWYER_ONLY">Lawyer only</option><option value="CLIENT_SHARED">Shared with client</option></select></label></div><button className="primary" disabled={busy}>Save entry</button></form>}</section>}
-    {map[tab] && tab !== 'Payments' && <section className="panel"><div className="panel-head"><div><div className="eyebrow">CASE RECORD</div><h2>{tab}</h2></div></div>{records.length ? <div className="records">{records.map(r => <div className="record" key={r.id}><strong>{r.statement || r.name || r.title || r.description || r.purpose || r.body || r.kind || (r.total_fee !== undefined ? `Fee: ${r.total_fee} ${r.currency}` : 'Entry')}</strong><p>{r.description && r.name ? r.description : r.event_date || r.starts_at || r.due_at || r.status || ''}</p>{r.visibility && <span className="small">{r.visibility === 'CLIENT_SHARED' ? 'Shared with client' : 'Lawyer only'}</span>}</div>)}</div> : <div className="empty">No {tab.toLowerCase()} recorded yet.</div>}{lawyer && <form onSubmit={add} className="add-form"><h3>Add {tab === 'Notes' ? 'note' : tab.slice(0, -1).toLowerCase()}</h3><div className="form-grid">{fields[tab].map(([name, type]) => <label key={name}>{name.replaceAll('_', ' ')}<input type={type} step={type === 'number' ? '0.01' : undefined} value={draft[name] || ''} onChange={e => setDraft({ ...draft, [name]: e.target.value })} required={name === fields[tab][0][0]} /></label>)}<label>Visibility<select value={draft.visibility || 'LAWYER_ONLY'} onChange={e => setDraft({ ...draft, visibility: e.target.value })}><option value="LAWYER_ONLY">Lawyer only</option><option value="CLIENT_SHARED">Shared with client</option></select></label></div><button className="primary" disabled={busy}>Save entry</button></form>}</section>}
+  const hearings = tab === 'Hearings' || lawyer ? records.filter(r => r.starts_at) : []
+
+  return <Shell title={item.title} subtitle={`${item.case_number || 'No case number'} · ${item.court || 'Court not set'}`} role={item.member_role}>
+    {lawyer && map[tab] === 'hearings' && <Notifications hearings={hearings} />}
+    <div className="case-heading">
+      <Link href="/" className="back">← All cases</Link>
+      <span className={`badge ${item.status.toLowerCase()}`}>{item.status}</span>
+    </div>
+    <div className="tabs">
+      {tabs.filter(t => lawyer || !['Ask CaseWise', 'AI Analysis', 'Notes'].includes(t)).map(t => <button key={t} className={tab === t ? 'active' : ''} onClick={() => setTab(t)}>{t}</button>)}
+    </div>
+    {error && <div className="error">{error}</div>}
+
+    {tab === 'Overview' && <div className="overview-grid">
+      <section className="panel">
+        <div className="eyebrow">CASE SUMMARY</div>
+        <h2>{item.main_issue || 'Main issue not set'}</h2>
+        <p className="body-copy">{item.description || 'Add case details to build the record.'}</p>
+        <dl>
+          <div><dt>Case type</dt><dd>{item.case_type || '—'}</dd></div>
+          <div><dt>Priority</dt><dd>{item.priority}</dd></div>
+          <div><dt>Filing date</dt><dd>{item.filing_date || '—'}</dd></div>
+          <div><dt>Client</dt><dd>{item.client?.name || '—'}</dd></div>
+        </dl>
+        {lawyer && item.client?.email && <div className="invite">
+          <p className="muted">Give {item.client.email} access after they create a client account.</p>
+          <button className="primary" onClick={invite}>Grant client access</button>
+          {inviteStatus && <p>{inviteStatus}</p>}
+        </div>}
+      </section>
+      <section className="panel">
+        <div className="eyebrow">DOCUMENTS</div>
+        <h2>Processing status</h2>
+        {docs.length ? docs.map(d => <div className="file-line" key={d.id}>{d.file_name}<span className={`badge ${d.processing_status.toLowerCase()}`}>{d.processing_status}</span></div>) : <p className="muted">No documents uploaded.</p>}
+        <button className="link-button" onClick={() => setTab('Documents')}>View documents →</button>
+      </section>
+    </div>}
+
+    {tab === 'Documents' && <section className="panel">
+      <div className="panel-head">
+        <div><div className="eyebrow">CASE SOURCES</div><h2>Documents</h2></div>
+        {lawyer && <label className="primary upload">{busy ? 'Uploading…' : '+ Upload documents'}<input type="file" accept=".pdf,.docx,.txt" multiple onChange={upload} disabled={busy} /></label>}
+      </div>
+      {docs.length ? docs.map(d => <div className="file-line" key={d.id}>
+        <button className="link-button" onClick={() => openDocument(d.id)}>{d.file_name}</button>
+        <span className={`badge ${d.processing_status.toLowerCase()}`}>{d.processing_status}</span>
+        {d.error_message && <small className="error-text">{d.error_message}</small>}
+      </div>) : <div className="empty">No documents yet. Upload PDF, DOCX or TXT files.</div>}
+      <p className="muted">Refresh this tab to see updated processing states.</p>
+    </section>}
+
+    {tab === 'Ask CaseWise' && <section className="panel">
+      <div className="eyebrow">CASE-SCOPED ASSISTANT</div>
+      <h2>Ask CaseWise</h2>
+      <p className="muted">Answers use only indexed documents in this case.</p>
+      {error && <div className="error">{error}</div>}
+      <form className="ask-form" onSubmit={ask}>
+        <input value={question} onChange={e => setQuestion(e.target.value)} placeholder="What evidence supports this claim?" minLength="3" required />
+        <button className="primary" disabled={busy}>{busy ? 'Reviewing sources…' : 'Ask'}</button>
+      </form>
+      {suggestedQuestions.length > 0 && !answer && <div className="suggested-questions">
+        <div className="eyebrow">SUGGESTED QUESTIONS</div>
+        <div className="question-grid">
+          {suggestedQuestions.map((q, i) => <button key={i} className="question-chip" onClick={() => selectQuestion(q)} disabled={busy}>{q}</button>)}
+        </div>
+      </div>}
+      {answer && <div className="answer">
+        <div className="eyebrow">ANSWER</div>
+        <p>{answer.answer}</p>
+        {answer.citations?.length > 0 && <>
+          <div className="eyebrow">SOURCE CITATIONS</div>
+          <div className="citations-list">
+            {answer.citations.map((c, i) => <div className="citation-card" key={i}>
+              <strong>{c.documentName}</strong>{c.pageNumber && <span> · Page {c.pageNumber}</span>}
+              <p className="citation-excerpt">"{c.excerpt}"</p>
+              {c.documentId && <button className="link-button" onClick={() => openDocument(c.documentId)}>View document ↗</button>}
+            </div>)}
+          </div>
+        </>}
+      </div>}
+      <p className="disclaimer">{disclaimer}</p>
+    </section>}
+
+    {tab === 'AI Analysis' && <section className="panel">
+      <div className="panel-head">
+        <div><div className="eyebrow">SOURCE-VERIFIED SUGGESTIONS</div><h2>AI case review</h2></div>
+        <button className="primary" onClick={analyze} disabled={busy}>{busy ? 'Analyzing…' : 'Analyze processed documents'}</button>
+      </div>
+      <p className="muted">Suggestions require exact quotes from processed documents. Empty sections mean there was not enough verified source text.</p>
+      {analyses.length ? <div className="analysis-grid">
+        {Object.entries(analyses[0].result || {}).filter(([key, value]) => Array.isArray(value)).map(([key, values]) => <div className="record" key={key}>
+          <h3>{key.replace(/([A-Z])/g, ' $1')}</h3>
+          {values.length ? values.map((v, i) => <div className="analysis-item" key={i}>
+            <p>{v.text}</p>
+            <blockquote>"{v.quote}"</blockquote>
+            <div className="analysis-actions">
+              <button className="link-button" onClick={() => openDocument(v.documentId)}>{v.documentName}{v.pageNumber ? ` · Page ${v.pageNumber}` : ''} ↗</button>
+              {lawyer && aiCategoryMap[key] && <button className="add-to-section-btn" onClick={() => addFromAI(key, v)} disabled={busy}>+ Add to {Object.keys(map).find(k => map[k] === aiCategoryMap[key])}</button>}
+            </div>
+          </div>) : <p className="muted">No sourced suggestions.</p>}
+        </div>)}
+      </div> : <div className="empty">No analysis yet. Process a document, then run a case review.</div>}
+      <p className="disclaimer">{disclaimer}</p>
+    </section>}
+
+    {tab === 'Payments' && <section className="panel">
+      <div className="panel-head">
+        <div><div className="eyebrow">CASE RECORD</div><h2>Payments</h2></div>
+        {lawyer && !showAddForm && <button className="primary" onClick={() => setShowAddForm(true)}>+ Add Payment</button>}
+      </div>
+      {records.length ? <div className="records">
+        {records.map(r => editing === r.id ? (
+          <form key={r.id} onSubmit={(e) => editRecord(r.id, e)} className="edit-form">
+            <div className="form-grid">
+              {fields.Payments.map(([name, type]) => <label key={name}>{name.replaceAll('_', ' ')}<input type={type} step={type === 'number' ? '0.01' : undefined} value={draft[name] || ''} onChange={e => setDraft({ ...draft, [name]: e.target.value })} required={name === fields.Payments[0][0]} /></label>)}
+              <label>Visibility<select value={draft.visibility || 'LAWYER_ONLY'} onChange={e => setDraft({ ...draft, visibility: e.target.value })}><option value="LAWYER_ONLY">Lawyer only</option><option value="CLIENT_SHARED">Shared with client</option></select></label>
+            </div>
+            <div className="button-group">
+              <button type="submit" className="primary" disabled={busy}>Save</button>
+              <button type="button" className="secondary" onClick={cancelEdit}>Cancel</button>
+            </div>
+          </form>
+        ) : (
+          <div className="record payment-record" key={r.id}>
+            <div className="payment-header">
+              <strong>Fee: {r.total_fee} {r.currency}</strong>
+              <span className={`badge ${r.status.toLowerCase()}`}>{r.status}</span>
+            </div>
+            <p>{r.due_date && `Due: ${r.due_date}`}{r.paid_at && ` • Paid: ${new Date(r.paid_at).toLocaleDateString()}`}</p>
+            {r.visibility && <span className="small">{r.visibility === 'CLIENT_SHARED' ? 'Shared with client' : 'Lawyer only'}</span>}
+            {!lawyer && r.status === 'PENDING' && <div className="payment-actions">
+              <div className="qr-container">
+                <img src={generateUPIQR(r)} alt="Pay via UPI" className="payment-qr" />
+                <p className="small">Scan to pay via GPay/PhonePe/Paytm</p>
+              </div>
+              <button className="primary" onClick={() => markPaid(r.id)} disabled={busy}>Mark as Paid</button>
+            </div>}
+            {r.payment_reference && <p className="small">Ref: {r.payment_reference}</p>}
+            {lawyer && <div className="record-actions">
+              <button className="icon-btn" onClick={() => startEdit(r)} title="Edit">✏️</button>
+              <button className="icon-btn delete" onClick={() => deleteRecord(r.id)} title="Delete">🗑️</button>
+            </div>}
+          </div>
+        ))}
+      </div> : <div className="empty">No payments recorded yet.</div>}
+      {lawyer && showAddForm && <form onSubmit={add} className="add-form">
+        <h3>Add payment</h3>
+        <div className="form-grid">
+          {fields.Payments.map(([name, type]) => <label key={name}>{name.replaceAll('_', ' ')}<input type={type} step={type === 'number' ? '0.01' : undefined} value={draft[name] || ''} onChange={e => setDraft({ ...draft, [name]: e.target.value })} required={name === fields.Payments[0][0]} /></label>)}
+          <label>Visibility<select value={draft.visibility || 'LAWYER_ONLY'} onChange={e => setDraft({ ...draft, visibility: e.target.value })}><option value="LAWYER_ONLY">Lawyer only</option><option value="CLIENT_SHARED">Shared with client</option></select></label>
+        </div>
+        <div className="button-group">
+          <button type="submit" className="primary" disabled={busy}>Save entry</button>
+          <button type="button" className="secondary" onClick={cancelEdit}>Cancel</button>
+        </div>
+      </form>}
+    </section>}
+
+    {tab === 'Hearings' && <section className="panel">
+      <div className="panel-head">
+        <div><div className="eyebrow">CASE RECORD</div><h2>Hearings</h2></div>
+        {lawyer && !showAddForm && <button className="primary" onClick={() => setShowAddForm(true)}>+ Add Hearing</button>}
+      </div>
+      <Calendar hearings={records} onDateClick={(day, dayHearings) => console.log('Clicked', day, dayHearings)} />
+      {records.length ? <div className="hearings-list">
+        <h3>All Hearings</h3>
+        {records.map(r => editing === r.id ? (
+          <form key={r.id} onSubmit={(e) => editRecord(r.id, e)} className="edit-form">
+            <div className="form-grid">
+              {fields.Hearings.map(([name, type]) => <label key={name}>{name.replaceAll('_', ' ')}<input type={type} value={draft[name] || ''} onChange={e => setDraft({ ...draft, [name]: e.target.value })} required={name === fields.Hearings[0][0]} /></label>)}
+              <label>Visibility<select value={draft.visibility || 'LAWYER_ONLY'} onChange={e => setDraft({ ...draft, visibility: e.target.value })}><option value="LAWYER_ONLY">Lawyer only</option><option value="CLIENT_SHARED">Shared with client</option></select></label>
+            </div>
+            <div className="button-group">
+              <button type="submit" className="primary" disabled={busy}>Save</button>
+              <button type="button" className="secondary" onClick={cancelEdit}>Cancel</button>
+            </div>
+          </form>
+        ) : (
+          <div className="hearing-card" key={r.id}>
+            <div className="hearing-header">
+              <strong>{r.purpose || 'Hearing'}</strong>
+              <span className="hearing-date">{r.starts_at ? new Date(r.starts_at).toLocaleDateString() : 'Date TBD'}</span>
+            </div>
+            <p className="hearing-court">{r.court || 'Court not specified'}</p>
+            {r.starts_at && <p className="hearing-time">{new Date(r.starts_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>}
+            {r.notes && <p className="hearing-notes">{r.notes}</p>}
+            {r.visibility && <span className="small">{r.visibility === 'CLIENT_SHARED' ? 'Shared with client' : 'Lawyer only'}</span>}
+            {lawyer && <div className="record-actions">
+              <button className="icon-btn" onClick={() => startEdit(r)} title="Edit">✏️</button>
+              <button className="icon-btn delete" onClick={() => deleteRecord(r.id)} title="Delete">🗑️</button>
+            </div>}
+          </div>
+        ))}
+      </div> : <div className="empty">No hearings scheduled yet.</div>}
+      {lawyer && showAddForm && <form onSubmit={add} className="add-form">
+        <h3>Add hearing</h3>
+        <div className="form-grid">
+          {fields.Hearings.map(([name, type]) => <label key={name}>{name.replaceAll('_', ' ')}<input type={type} value={draft[name] || ''} onChange={e => setDraft({ ...draft, [name]: e.target.value })} required={name === fields.Hearings[0][0]} /></label>)}
+          <label>Visibility<select value={draft.visibility || 'LAWYER_ONLY'} onChange={e => setDraft({ ...draft, visibility: e.target.value })}><option value="LAWYER_ONLY">Lawyer only</option><option value="CLIENT_SHARED">Shared with client</option></select></label>
+        </div>
+        <div className="button-group">
+          <button type="submit" className="primary" disabled={busy}>Save entry</button>
+          <button type="button" className="secondary" onClick={cancelEdit}>Cancel</button>
+        </div>
+      </form>}
+    </section>}
+
+    {map[tab] && tab !== 'Payments' && tab !== 'Hearings' && <section className="panel">
+      <div className="panel-head">
+        <div><div className="eyebrow">CASE RECORD</div><h2>{tab}</h2></div>
+        {lawyer && !showAddForm && <button className="primary" onClick={() => setShowAddForm(true)}>+ Add {tab === 'Notes' ? 'Note' : tab.slice(0, -1)}</button>}
+      </div>
+      {records.length ? <div className="records">
+        {records.map(r => editing === r.id ? (
+          <form key={r.id} onSubmit={(e) => editRecord(r.id, e)} className="edit-form">
+            <div className="form-grid">
+              {fields[tab].map(([name, type]) => <label key={name}>{name.replaceAll('_', ' ')}<input type={type} step={type === 'number' ? '0.01' : undefined} value={draft[name] || ''} onChange={e => setDraft({ ...draft, [name]: e.target.value })} required={name === fields[tab][0][0]} /></label>)}
+              <label>Visibility<select value={draft.visibility || 'LAWYER_ONLY'} onChange={e => setDraft({ ...draft, visibility: e.target.value })}><option value="LAWYER_ONLY">Lawyer only</option><option value="CLIENT_SHARED">Shared with client</option></select></label>
+            </div>
+            <div className="button-group">
+              <button type="submit" className="primary" disabled={busy}>Save</button>
+              <button type="button" className="secondary" onClick={cancelEdit}>Cancel</button>
+            </div>
+          </form>
+        ) : (
+          <div className="record" key={r.id}>
+            <strong>{r.statement || r.name || r.title || r.description || r.purpose || r.body || r.kind || (r.total_fee !== undefined ? `Fee: ${r.total_fee} ${r.currency}` : 'Entry')}</strong>
+            <p>{r.description && r.name ? r.description : r.event_date || r.starts_at || r.due_at || r.status || ''}</p>
+            {r.visibility && <span className="small">{r.visibility === 'CLIENT_SHARED' ? 'Shared with client' : 'Lawyer only'}</span>}
+            {lawyer && <div className="record-actions">
+              <button className="icon-btn" onClick={() => startEdit(r)} title="Edit">✏️</button>
+              <button className="icon-btn delete" onClick={() => deleteRecord(r.id)} title="Delete">🗑️</button>
+            </div>}
+          </div>
+        ))}
+      </div> : <div className="empty">No {tab.toLowerCase()} recorded yet.</div>}
+      {lawyer && showAddForm && <form onSubmit={add} className="add-form">
+        <h3>Add {tab === 'Notes' ? 'note' : tab.slice(0, -1).toLowerCase()}</h3>
+        <div className="form-grid">
+          {fields[tab].map(([name, type]) => <label key={name}>{name.replaceAll('_', ' ')}<input type={type} step={type === 'number' ? '0.01' : undefined} value={draft[name] || ''} onChange={e => setDraft({ ...draft, [name]: e.target.value })} required={name === fields[tab][0][0]} /></label>)}
+          <label>Visibility<select value={draft.visibility || 'LAWYER_ONLY'} onChange={e => setDraft({ ...draft, visibility: e.target.value })}><option value="LAWYER_ONLY">Lawyer only</option><option value="CLIENT_SHARED">Shared with client</option></select></label>
+        </div>
+        <div className="button-group">
+          <button type="submit" className="primary" disabled={busy}>Save entry</button>
+          <button type="button" className="secondary" onClick={cancelEdit}>Cancel</button>
+        </div>
+      </form>}
+    </section>}
   </Shell>
 }
